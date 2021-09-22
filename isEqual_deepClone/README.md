@@ -2,9 +2,7 @@
 
 > 좋은 코드를 구현하도록 주의하면서 isEqual, deepClone을 구현하고 jest를 이용해 테스트 통과하기
 
-## isEqual 함수 설명
-
-> 두 개의 인자에 담긴 내용물이 같은지 구분하는 함수
+## isEqual 기능 구현 설명
 
 ### isEqual(obj1, obj2)
 
@@ -41,7 +39,7 @@
 - 두 인자가 같은 타입인지 확인
   - 위에서 생성한 `isMinArgumentLengthCorrect` 함수를 사용해 매개변수 만큼의 인자를 받도록 했다.
 
-## deepClone 함수 설명
+## deepClone 기능 구현 설명
 
 > 배열 혹은 일반객체일 경우 dept에 상관 없이 deepcopy 한다.
 
