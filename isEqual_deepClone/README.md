@@ -1,6 +1,6 @@
 # isEqual, deepClone
 
-> 좋은 코드를 구현하도록 주의하면서 isEqual, deepClone을 구현하고 jest를 이용해 테스트 통과하기
+> 좋은 코드를 작성하도록 신경쓰면서 isEqual, deepClone을 구현하고 jest를 이용해 테스트 통과하기
 
 ## isEqual 기능 구현 설명
 
