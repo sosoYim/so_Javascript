@@ -10,8 +10,8 @@ const isMinArgumentLenghtCorrect = (functionToCompare, argumentsLength) => {
 };
 
 // 일반객체인지 확인
-function isObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]' || false;
+function isNormalObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
 }
 
 // 같은 타입인지(객체타입 끼리도) 확인
@@ -19,7 +19,7 @@ function isSameType(obj1, obj2) {
   isMinArgumentLenghtCorrect(isSameType, arguments.length);
   return (
     Object.prototype.toString.call(obj1) ===
-      Object.prototype.toString.call(obj2) || false
+    Object.prototype.toString.call(obj2)
   );
 }
 
@@ -37,7 +37,7 @@ function isEqual(obj1, obj2) {
   }
 
   // 열거하여 비교해야할 요소들 (Object, Array)
-  if (isObject(obj1) || Array.isArray(obj1)) {
+  if (isNormalObject(obj1) || Array.isArray(obj1)) {
     Array.isArray(obj1) && obj1.sort((a, b) => a - b);
     Array.isArray(obj2) && obj2.sort((a, b) => a - b);
 
