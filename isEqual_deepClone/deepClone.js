@@ -1,22 +1,18 @@
-// 일반객체인지 확인
-function isNormalObject(obj) {
-  return Object.prototype.toString.call(obj) === '[object Object]';
-}
-
 function deepClone(obj) {
   // 배열이거나 일반객체인 경우
-  if (isNormalObject(obj) || Array.isArray(obj)) {
-    // 식별자 초기화 (배열, 일반객체)
+  if (
+    Object.prototype.toString.call(obj) === '[object Object]' ||
+    Array.isArray(obj)
+  ) {
     const copiedObject = Array.isArray(obj) ? [] : {};
 
-    // 각각의 값을 재귀로 다시 확인
     Object.keys(obj).forEach(key => {
       copiedObject[key] = deepClone(obj[key]);
     });
     return copiedObject;
   }
 
-  // 원시값이거나 배열, 일반객체 제외 객체타입인경우 바로 반환
+  // 배열, 일반객체 제외 객체타입 혹은 원시타입인 경우
   return obj;
 }
 

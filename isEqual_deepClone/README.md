@@ -18,23 +18,26 @@
      false 체크에 걸리지 않은 경우 `return true`
   5. 이외의 객체타입 동치비교 `return`
 
-### isMinArgumentLenghtCorrect(functionToCompare, argLength)
+### errorLackArgument(functionToCompare, argLength)
 
-- 매개변수의 수 이상의 인자가 들어오면 true 아니면 false 0. 함수 선언문 (채택)
-  다른 곳에서도 매개변수 갯수체크가 가능하도록 함수 분리. 이때 arguments 프로퍼티가 아닌 내부에서 객체로 사용하는 것이 권장되기 때문에 함수를 호출하면서 인자로 넣어주게 설계했다.
-  1. 함수 분리 없이 ...args로 체크
-     ...args 하면 체크는 되는데 함수에 두개의 매개변수가 필요하다는 정보를 직관적으로 볼 수 없어 가독성이 떨어짐
-  2. 즉시실행함수
-     즉시 실행함수로 매개변수 길이 관련 식별자들은 생명주기를 짧게 준다
-     isEqual.arguments.length 혹은 즉시 실행함수의 매개변수 ??
+- 매개변수의 개수 이상의 인자가 들어오면 에러 반환
+  다른 곳에서도 매개변수 갯수체크가 가능하도록 함수 분리. 함수의 인수를 구분할 수 있는 방법으로 arguments 프로퍼티가 아닌 내부 객체로 사용하는 것이 권장되기 때문에 함수를 호출할 때 arguments.lenght 값을 인자로 넣어주게 설계했다.
 
-### isObject(obj)
+- 다른 방법 후보들
 
+1. 함수 분리 없이 ...args로 체크
+   ...args 하면 체크는 되는데 함수에 두개의 매개변수가 필요하다는 정보를 직관적으로 볼 수 없어 가독성이 떨어짐
+2. 즉시실행함수
+   즉시 실행함수로 매개변수 길이 관련 식별자들은 생명주기를 짧게 준다.
+
+### ~~isObject(obj)~~ isEqual 내부 코드로 사용
+
+- 함수 분리 하지 않고 내부에서 사용
 - 일반 객체인지 확인
   constructor가 Object가 아닌 일반 객체도 포함시키기 위해 `Object.prototype.toString.call(obj)` 를 이용했다.
   call을 통해 받은 객체의 프로토타입을 출력해주는 값 (`[object Object]`)과 비교하였는데, 값을 직접 하드코딩하여 비교한 점이 불편하지만 아직 다른 방법을 찾지 못하였다.
 
-### isSameType(obj1, obj2)
+### ~~isSameType(obj1, obj2)~~ isEqual 내부 코드로 사용
 
 - 두 인자가 같은 타입인지 확인
   - 위에서 생성한 `isMinArgumentLengthCorrect` 함수를 사용해 매개변수 만큼의 인자를 받도록 했다.
@@ -51,7 +54,7 @@
      b. forEach로 돌며 각각의 값을 재귀 호출하여 반환할 값이 나올 때 까지 확인한다.
   2. 나머지 경우 -> 값을 그대로 반환한다.
 
-### isObject(obj)
+### ~~isObject(obj)~~ deepClone 내부 코드로 사용
 
 - 일반 객체인지 확인
   isEqual에서 사용한 함수를 재사용했다.
