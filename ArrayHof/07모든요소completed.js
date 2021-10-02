@@ -3,13 +3,15 @@ let todos = [
   { id: 2, content: 'CSS', completed: true },
   { id: 1, content: 'Javascript', completed: false }
 ];
+//
+const toggleCompletedAll = todos =>
+  todos.map(todo => ({ ...todo, completed: true }));
 
-const toggleCompletedAll = todos => {
-  todos.map(val => {
-    val.completed = true;
-    return val;
-  });
-};
+// const toggleCompletedAll = todos =>
+//   todos.map(val => {
+//     val.completed = true;
+//     return val;
+//   });
 
 todos = toggleCompletedAll(todos);
 console.log(todos);

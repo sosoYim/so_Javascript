@@ -4,8 +4,8 @@ let todos = [
   { id: 1, content: 'Javascript', completed: false }
 ];
 
-// 하나만 지우면 단수로 이름짓자
-const removeTodo = (todos, id) => todos.filter(val => val.id !== id);
+const toggleCompletedAll = todos =>
+  todos.map(todo => ({ ...todo, completed: true }));
 
-todos = removeTodo(todos, 2);
+todos = toggleCompletedAll(todos);
 console.log(todos);
