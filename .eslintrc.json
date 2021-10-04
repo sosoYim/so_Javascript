@@ -20,6 +20,7 @@
     // "warn" or 1 - turn the rule on as a warning (doesn’t affect exit code)
     // "error" or 2 - turn the rule on as an error (exit code is 1 when triggered)
     // "no-var": "off",
+    "import/extensions": "off", // 추가함
     "no-console": "warn",
     "no-plusplus": "off",
     "no-shadow": "off",

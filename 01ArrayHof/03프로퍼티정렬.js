@@ -20,3 +20,8 @@ todos = sortBy(todos, 'content');
 todos = sortBy(todos, 'completed');
 
 console.log(todos);
+
+const arr = ['hi', 'you'];
+const result = arr.flatMap(v => v.split(''));
+console.log(result);
+console.log(arr);
