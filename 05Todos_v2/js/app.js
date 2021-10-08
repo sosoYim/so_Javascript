@@ -83,7 +83,10 @@ const addTodo = content => {
 
 // Update
 const updateTodo = (id, content) => {
-  todos = todos.map(todo => (todo.id === id ? content : todo));
+  // TODO: 값은 받아지는데 적용 안됨
+  setTodos(
+    (todos = todos.map(todo => (todo.id === +id ? { ...todo, content } : todo)))
+  );
 };
 
 // Toggle check
@@ -119,7 +122,7 @@ $toggleAll.onclick = () => {
 
 $newTodo.onkeyup = e => {
   if (e.key !== 'Enter') return;
-  addTodo($newTodo.value);
+  if ($newTodo.value.trim()) addTodo($newTodo.value);
   $newTodo.value = '';
   // $newTodo.focus();
 };
@@ -139,17 +142,17 @@ $todoList.onclick = e => {
 
 $todoList.ondblclick = e => {
   const $edit = e.target.parentNode.parentNode;
-  const $newContent = e.target.parentNode.nextElementSibling;
+
   $edit.classList.add('editing');
   $edit.focus();
-  $edit.onkeyup = () => {
-    if (e.key === 'Enter') {
-      // TODO: 저장실패
-      console.log($newContent);
-      updateTodo($edit.id, $newContent);
-      $edit.classList.remove('editing');
-    }
-  };
+};
+
+$todoList.onkeydown = e => {
+  if (e.key !== 'Enter') return;
+  const $oldContent = e.target.getAttribute('value');
+  const $newContent = e.target.value.trim();
+  if ($newContent && $oldContent !== $newContent)
+    updateTodo(e.target.parentNode.dataset.id, $newContent);
 };
 
 // FOOTER ==========================
