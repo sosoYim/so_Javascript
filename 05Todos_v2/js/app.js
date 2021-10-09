@@ -1,5 +1,6 @@
 // State
 let todos = [];
+let currentFilter = 'all';
 
 // Dom Nodes
 const $toggleAll = document.querySelector('.toggle-all');
@@ -8,11 +9,13 @@ const $main = document.querySelector('.main');
 const $todoList = document.querySelector('.todo-list');
 const $newTodo = document.querySelector('.new-todo');
 
+const $footer = document.querySelector('.footer');
 const $todoCount = document.querySelector('.todo-count');
 const $clearCompleted = document.querySelector('.clear-completed');
 
 // Function==========
 
+/*
 const todoCount = () => {
   $todoCount.innerHTML = `${todos.length} ${
     todos.length > 1 ? 'items' : 'item'
@@ -20,6 +23,7 @@ const todoCount = () => {
 };
 
 const completedCount = () => todos.filter(({ completed }) => completed).length;
+
 const viewByTodosLength = () => {
   todoCount();
 
@@ -31,17 +35,19 @@ const viewByTodosLength = () => {
     ? $clearCompleted.classList.add('hidden')
     : $clearCompleted.classList.remove('hidden');
 };
+*/
 
 // Rendering
-const render = (category = 'all') => {
-  const showTodos =
-    category === 'all'
-      ? [...todos]
-      : category === 'active'
-      ? todos.filter(todo => !todo.completed)
-      : todos.filter(todo => todo.completed);
+const render = () => {
+  const _todos = todos.filter(todo =>
+    currentFilter === 'completed'
+      ? todo.completed
+      : currentFilter === 'active'
+      ? !todo.completed
+      : todo
+  );
 
-  $todoList.innerHTML = showTodos
+  $todoList.innerHTML = _todos
     .map(
       ({ id, content, completed }) => `
       <li data-id="${id}">
@@ -55,14 +61,30 @@ const render = (category = 'all') => {
   `
     )
     .join('');
+
+  [$main, $footer].forEach($el =>
+    $el.classList.toggle('hidden', todos.length === 0)
+  );
+
+  const activeTodos = todos.filter(todo => !todo.completed);
+
+  $todoCount.textContent = `${activeTodos.length} ${
+    activeTodos.length > 1 ? 'items' : 'item'
+  } left`;
+
+  const completedTodos = todos.filter(todo => todo.completed);
+  $clearCompleted.classList.toggle('hidden', completedTodos.length === 0);
+  // viewByTodosLength();
 };
 
 const setTodos = newTodos => {
   todos = newTodos;
-  // TODO: 여기두는게 맞나??
   render();
-  viewByTodosLength();
-  console.log(todos);
+};
+
+const setFilter = newFilter => {
+  currentFilter = newFilter;
+  render();
 };
 
 // first fetch
@@ -81,9 +103,9 @@ const addTodo = content => {
   setTodos([{ id: generateTodoId(), content, completed: false }, ...todos]);
 };
 
-// Update
-const updateTodo = (id, content) => {
-  // TODO: 값은 받아지는데 적용 안됨
+// Update content
+const updateTodoContent = (id, content) => {
+  console.log(id, content);
   setTodos(
     (todos = todos.map(todo => (todo.id === +id ? { ...todo, content } : todo)))
   );
@@ -98,9 +120,9 @@ const toggleTodoCompleted = id => {
   );
 };
 
-const toggleTodoCompletedAll = () => {
+const toggleTodoCompletedAll = completed => {
   // 시간나면 체크하고 전체 선택 취소도 만들자
-  setTodos(todos.map(todo => ({ ...todo, completed: true })));
+  setTodos(todos.map(todo => ({ ...todo, completed })));
 };
 
 // Delete
@@ -116,43 +138,54 @@ const removeCompleted = () => {
 
 window.addEventListener('DOMContentLoaded', fetchTodos);
 
-$toggleAll.onclick = () => {
-  toggleTodoCompletedAll();
-};
-
 $newTodo.onkeyup = e => {
   if (e.key !== 'Enter') return;
-  if ($newTodo.value.trim()) addTodo($newTodo.value);
+  const content = $newTodo.value.trim();
+  if (content) addTodo(content);
   $newTodo.value = '';
   // $newTodo.focus();
 };
 
+$toggleAll.onclick = () => {
+  const completed = $toggleAll.checked;
+  toggleTodoCompletedAll(completed);
+};
+
 $todoList.onchange = e => {
-  const { id } = e.target.parentNode.parentNode.dataset;
-  toggleTodoCompleted(id);
+  // const { id } = e.target.parentNode.parentNode.dataset;
+  toggleTodoCompleted(e.target.closest('li').dataset.id);
 };
 
+// x todo 삭제
 $todoList.onclick = e => {
-  // x 삭제
-  if (e.target.matches('.destroy')) {
-    const { id } = e.target.parentNode.parentNode.dataset;
-    removeTodo(id);
-  }
+  if (!e.target.matches('.destroy')) return;
+  removeTodo(e.target.closest('li').dataset.id);
 };
 
+// todo 편집
 $todoList.ondblclick = e => {
-  const $edit = e.target.parentNode.parentNode;
+  if (!e.target.matches('.view > label')) return;
+  e.target.closest('li').classList.add('editing');
 
-  $edit.classList.add('editing');
-  $edit.focus();
+  // const $edit = e.target.parentNode.parentNode;
+
+  // $edit.classList.add('editing');
+  // $edit.focus();
 };
 
-$todoList.onkeydown = e => {
+$todoList.onkeyup = e => {
+  console.log(e);
   if (e.key !== 'Enter') return;
-  const $oldContent = e.target.getAttribute('value');
-  const $newContent = e.target.value.trim();
-  if ($newContent && $oldContent !== $newContent)
-    updateTodo(e.target.parentNode.dataset.id, $newContent);
+  // TODO: 안들어와짐ㅠㅜ
+  console.log('Enter는 들어와...');
+
+  // console.log(e.target.parentNode.dataset.id, e.target.value);
+  updateTodoContent(e.target.parentNode.dataset.id, e.target.value.trim());
+
+  // const $oldContent = e.target.getAttribute('value');
+  // const $newContent = e.target.value.trim();
+  // if ($newContent && $oldContent !== $newContent)
+  //   updateTodo(e.target.parentNode.dataset.id, $newContent);
 };
 
 // FOOTER ==========================
@@ -164,15 +197,23 @@ $clearCompleted.onclick = () => {
 const $filters = document.querySelector('.filters');
 
 $filters.onclick = e => {
-  const category = e.target.matches('#active')
-    ? 'active'
-    : e.target.matches('#completed')
-    ? 'completed'
-    : 'all';
+  if (!e.target.matches('.filters > li > a')) return;
+  [...$filters.querySelectorAll('a')].forEach($a => {
+    $a.classList.toggle('selected', $a === e.target);
+  });
 
-  // if (category === 'active' || category === 'completed' || category === 'all'){
-  if (e.target.matches(`#${category}`)) {
-    render(category);
-    document.getElementById(`#${category}`);
-  }
+  setFilter(e.target.id);
+
+  // [BEFORE CORRECTION]
+  // const category = e.target.matches('#active')
+  //   ? 'active'
+  //   : e.target.matches('#completed')
+  //   ? 'completed'
+  //   : 'all';
+
+  // // if (category === 'active' || category === 'completed' || category === 'all'){
+  // if (e.target.matches(`#${category}`)) {
+  //   render(category);
+  //   document.getElementById(`#${category}`);
+  // }
 };

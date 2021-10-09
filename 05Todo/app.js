@@ -53,6 +53,7 @@ const toggleTodoCompleted = id => {
 
 // Event Handlers Binding
 window.addEventListener('DOMContentLoaded', fetchTodos);
+
 $form.onsubmit = e => {
   e.preventDefault();
 
@@ -66,6 +67,5 @@ $form.onsubmit = e => {
 
 $todoList.onchange = e => {
   const { id } = e.target.parentNode;
-
   toggleTodoCompleted(id);
 };
