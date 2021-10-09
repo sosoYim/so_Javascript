@@ -19,7 +19,8 @@ function isPalindrome2(s) {
   // [] : or
   // 소문자 알파벳(a-z)이나 숫자(0-9)가 아닌(^) 것
   const temp = s.toLowerCase().replace(/[^a-z0-9]/gi, '');
-  return temp === [...temp].reverse().join();
+
+  return temp === [...temp].reverse().join('');
 }
 
 console.log(isPalindrome('A man, a plan, a canal: Panama')); // => true

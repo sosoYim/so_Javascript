@@ -1,3 +1,7 @@
+/*
+03. A를 #으로
+*/
+
 function replaceAtoSharp(s) {
   return [...s].map(v => (v === 'A' ? '#' : v)).join('');
 }

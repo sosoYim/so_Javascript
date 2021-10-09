@@ -1,3 +1,7 @@
+/*
+2. 달의 말일 구하기
+*/
+
 const getLastDateOfMonth = (year, month) =>
   new Date(year, month + 1, 0).getDate();
 

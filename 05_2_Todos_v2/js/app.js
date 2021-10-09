@@ -172,20 +172,11 @@ $todoList.ondblclick = e => {
   // $edit.classList.add('editing');
   // $edit.focus();
 };
-
-$todoList.onkeyup = e => {
-  console.log(e);
+// TODO: onkeyup 왜 안됨??
+$todoList.onkeydown = e => {
+  console.log(e.key);
   if (e.key !== 'Enter') return;
-  // TODO: 안들어와짐ㅠㅜ
-  console.log('Enter는 들어와...');
-
-  // console.log(e.target.parentNode.dataset.id, e.target.value);
   updateTodoContent(e.target.parentNode.dataset.id, e.target.value.trim());
-
-  // const $oldContent = e.target.getAttribute('value');
-  // const $newContent = e.target.value.trim();
-  // if ($newContent && $oldContent !== $newContent)
-  //   updateTodo(e.target.parentNode.dataset.id, $newContent);
 };
 
 // FOOTER ==========================
