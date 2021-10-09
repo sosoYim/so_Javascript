@@ -1,8 +1,16 @@
-// State
+/*
+ * ===============
+ * STATES
+ * ===============
+ */
 let todos = [];
 let currentFilter = 'all';
 
-// Dom Nodes
+/*
+ * ===============
+ * DOM NODES
+ * ===============
+ */
 const $toggleAll = document.querySelector('.toggle-all');
 
 const $main = document.querySelector('.main');
@@ -10,34 +18,17 @@ const $todoList = document.querySelector('.todo-list');
 const $newTodo = document.querySelector('.new-todo');
 
 const $footer = document.querySelector('.footer');
+const $filters = document.querySelector('.filters');
 const $todoCount = document.querySelector('.todo-count');
 const $clearCompleted = document.querySelector('.clear-completed');
 
-// Function==========
-
 /*
-const todoCount = () => {
-  $todoCount.innerHTML = `${todos.length} ${
-    todos.length > 1 ? 'items' : 'item'
-  } left`;
-};
+ * ===============
+ * STATE FUNCTIONS
+ * ===============
+ */
 
-const completedCount = () => todos.filter(({ completed }) => completed).length;
-
-const viewByTodosLength = () => {
-  todoCount();
-
-  todos.length === 0
-    ? $main.classList.add('hidden')
-    : $main.classList.remove('hidden');
-
-  completedCount() === 0
-    ? $clearCompleted.classList.add('hidden')
-    : $clearCompleted.classList.remove('hidden');
-};
-*/
-
-// Rendering
+// VIEW===================
 const render = () => {
   const _todos = todos.filter(todo =>
     currentFilter === 'completed'
@@ -74,9 +65,9 @@ const render = () => {
 
   const completedTodos = todos.filter(todo => todo.completed);
   $clearCompleted.classList.toggle('hidden', completedTodos.length === 0);
-  // viewByTodosLength();
 };
 
+// MODEL===================
 const setTodos = newTodos => {
   todos = newTodos;
   render();
@@ -96,9 +87,10 @@ const fetchTodos = () => {
   ]);
 };
 
-// Add
+// Service
 const generateTodoId = () => Math.max(...todos.map(todo => todo.id), 0) + 1;
 
+// Add
 const addTodo = content => {
   setTodos([{ id: generateTodoId(), content, completed: false }, ...todos]);
 };
@@ -111,7 +103,7 @@ const updateTodoContent = (id, content) => {
   );
 };
 
-// Toggle check
+// Completed Update
 const toggleTodoCompleted = id => {
   setTodos(
     todos.map(todo =>
@@ -121,11 +113,10 @@ const toggleTodoCompleted = id => {
 };
 
 const toggleTodoCompletedAll = completed => {
-  // 시간나면 체크하고 전체 선택 취소도 만들자
   setTodos(todos.map(todo => ({ ...todo, completed })));
 };
 
-// Delete
+// Remove
 const removeTodo = id => {
   setTodos(todos.filter(todo => todo.id !== +id));
 };
@@ -134,7 +125,11 @@ const removeCompleted = () => {
   setTodos(todos.filter(todo => !todo.completed));
 };
 
-// Event Binding==============
+/*
+ * ===============
+ * EVENT BINDINGS
+ * ===============
+ */
 
 window.addEventListener('DOMContentLoaded', fetchTodos);
 
@@ -143,7 +138,6 @@ $newTodo.onkeyup = e => {
   const content = $newTodo.value.trim();
   if (content) addTodo(content);
   $newTodo.value = '';
-  // $newTodo.focus();
 };
 
 $toggleAll.onclick = () => {
@@ -166,26 +160,20 @@ $todoList.onclick = e => {
 $todoList.ondblclick = e => {
   if (!e.target.matches('.view > label')) return;
   e.target.closest('li').classList.add('editing');
-
-  // const $edit = e.target.parentNode.parentNode;
-
-  // $edit.classList.add('editing');
-  // $edit.focus();
 };
+
 // TODO: onkeyup 왜 안됨??
 $todoList.onkeydown = e => {
-  console.log(e.key);
+  // console.log(e.key);
   if (e.key !== 'Enter') return;
   updateTodoContent(e.target.parentNode.dataset.id, e.target.value.trim());
 };
 
-// FOOTER ==========================
+// FOOTER
 
 $clearCompleted.onclick = () => {
   removeCompleted();
 };
-
-const $filters = document.querySelector('.filters');
 
 $filters.onclick = e => {
   if (!e.target.matches('.filters > li > a')) return;
@@ -194,17 +182,4 @@ $filters.onclick = e => {
   });
 
   setFilter(e.target.id);
-
-  // [BEFORE CORRECTION]
-  // const category = e.target.matches('#active')
-  //   ? 'active'
-  //   : e.target.matches('#completed')
-  //   ? 'completed'
-  //   : 'all';
-
-  // // if (category === 'active' || category === 'completed' || category === 'all'){
-  // if (e.target.matches(`#${category}`)) {
-  //   render(category);
-  //   document.getElementById(`#${category}`);
-  // }
 };
