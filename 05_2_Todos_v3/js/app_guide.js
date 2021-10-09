@@ -170,7 +170,7 @@ $todoList.onkeyup = e => {
   // e.target.parentNode.dataset.id
   // e.target.value
   // updateTodoContent(e.target.parentNode.dataset.id, e.target.value)
-  // editing 클래스 빠지게 하는것? => 지금은 새로 랜더링을 해주니 신경안써도 됨
+  // TODO: editing 클래스 빠지게 하는것?
 };
 
 // removeTodo
