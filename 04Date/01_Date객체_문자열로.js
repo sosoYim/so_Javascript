@@ -4,10 +4,10 @@
 
 // const formatDate = date => date.toISOString().substring(0, 10);
 
-// 국제 표준시에 9시간 더하기
+// 국제 표준시 기준이라면 date.getTime() + 9 * 60 * 60 * 1000로 9시간 더하기
 const formatDate = date => {
-  const newDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const newDate = new Date(date.getTime());
   return newDate.toISOString().substring(0, 10);
 };
 
-console.log(formatDate(new Date('2021/07/24')));
+console.log(formatDate(new Date('1900/1/4')));

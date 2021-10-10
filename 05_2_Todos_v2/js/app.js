@@ -97,7 +97,6 @@ const addTodo = content => {
 
 // Update content
 const updateTodoContent = (id, content) => {
-  console.log(id, content);
   setTodos(
     (todos = todos.map(todo => (todo.id === +id ? { ...todo, content } : todo)))
   );
