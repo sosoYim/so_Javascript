@@ -4,4 +4,4 @@
 > ESLint 컨벤션 기반으로 작성되며 가독성, 정확성, 성능 등을 고려해 작성됩니다.
 > 오류나 부족한 부분은 이슈 남겨주시면 감사하겠습니다.
 
-1.  [isEqual & deepClone 구현](https://github.com/sosoYim/so_Javascript/tree/main/isEqual_deepClone)
+1.  [isEqual & deepClone 구현](./00isEqual_deepClone)
