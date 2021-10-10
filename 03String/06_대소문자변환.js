@@ -11,10 +11,9 @@
 
 // 정규표현식의 | 을 기준으로 '캡쳐'한다
 //
-const toggleCase = str => {
-  str.replace(/([a-z]+)|[A-Z]+/g, (_, lowerCase, upperCase) => {
-    lowerCase ? lowerCase.toUpperCase() : upperCase.toLowerCase();
-  });
-};
+const toggleCase = str =>
+  str.replace(/([a-z]+)|([A-Z]+)/g, (_, lowerCase, upperCase) =>
+    lowerCase ? lowerCase.toUpperCase() : upperCase.toLowerCase()
+  );
 
 console.log(toggleCase('StuDY')); // => 'sTUdy'
